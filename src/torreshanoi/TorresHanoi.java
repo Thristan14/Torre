@@ -12,6 +12,7 @@ public class TorresHanoi extends JPanel {
     private int movimientoActual = 0;
     private List<int[]> movimientos;
     private Color[] colores;
+    private boolean juegoTerminado = false; // Para evitar mostrar el mensaje múltiples veces
 
     public TorresHanoi(int numDiscos, int numTorres) {
         this.numDiscos = numDiscos;
@@ -26,7 +27,7 @@ public class TorresHanoi extends JPanel {
             torres[0].push(i); // Coloca todos los discos en la primera torre
         }
         this.movimientos = new ArrayList<>();
-        resolverHanoi(numDiscos, 0, this.numTorres - 1);
+        resolverHanoi(numDiscos, 0, this.numTorres - 1, 1);
         new Timer(500, e -> moverDisco()).start();
     }
 
@@ -36,28 +37,14 @@ public class TorresHanoi extends JPanel {
         }
     }
 
-    private void resolverHanoi(int n, int origen, int destino) {
-        if (n == 0) return; // Caso base
-
-        // Encuentra una torre auxiliar que no sea origen ni destino
-        int auxiliar = -1;
-        for (int i = 0; i < numTorres; i++) {
-            if (i != origen && i != destino) {
-                auxiliar = i;
-                break;
-            }
+    private void resolverHanoi(int n, int origen, int destino, int auxiliar) {
+        if (n == 1) {
+            movimientos.add(new int[]{origen, destino});
+            return;
         }
-
-        if (auxiliar == -1) return; // Si no hay torre auxiliar, termina
-
-        // Mueve n-1 discos de origen a auxiliar, usando destino como auxiliar
-        resolverHanoi(n - 1, origen, auxiliar);
-
-        // Mueve el disco restante de origen a destino
+        resolverHanoi(n - 1, origen, auxiliar, destino);
         movimientos.add(new int[]{origen, destino});
-
-        // Mueve n-1 discos de auxiliar a destino, usando origen como auxiliar
-        resolverHanoi(n - 1, auxiliar, destino);
+        resolverHanoi(n - 1, auxiliar, destino, origen);
     }
 
     private void moverDisco() {
@@ -76,6 +63,16 @@ public class TorresHanoi extends JPanel {
                     torres[origen].push(disco); // Devuelve el disco a la torre de origen
                     movimientoActual++; // Avanza al siguiente movimiento
                 }
+            }
+        } else if (!juegoTerminado) {
+            // Verifica si todos los discos están en la última torre
+            if (torres[numTorres - 1].size() == numDiscos) {
+                juegoTerminado = true; // Marca el juego como terminado
+                // Muestra el mensaje de felicitación con el número de movimientos
+                JOptionPane.showMessageDialog(this, 
+                    "¡Lo has logrado!\nNúmero de movimientos: " + movimientoActual, 
+                    "Felicidades", 
+                    JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
@@ -111,7 +108,7 @@ public class TorresHanoi extends JPanel {
     public static void main(String[] args) {
         int numDiscos = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el número de discos:"));
         int numTorres = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el número de torres:"));
-        JFrame frame = new JFrame("Torres de Hanoi con múltiples torres");
+        JFrame frame = new JFrame("Torres de Hanoi");
         TorresHanoi panel = new TorresHanoi(numDiscos, numTorres);
         frame.add(panel);
         frame.setSize(800, 600);
