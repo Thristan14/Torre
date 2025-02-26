@@ -12,6 +12,7 @@ public class TorresHanoi extends JPanel {
     private int movimientoActual = 0;
     private List<int[]> movimientos;
     private Color[] colores;
+    private boolean juegoTerminado = false;
 
     public TorresHanoi(int numDiscos, int numTorres) {
         this.numDiscos = numDiscos;
@@ -76,6 +77,12 @@ public class TorresHanoi extends JPanel {
                     torres[origen].push(disco); // Devuelve el disco a la torre de origen
                     movimientoActual++; // Avanza al siguiente movimiento
                 }
+            }
+        } else if (!juegoTerminado) {
+            // Verifica si todos los discos están en la última torre
+            if (torres[numTorres - 1].size() == numDiscos) {
+                juegoTerminado = true;
+                JOptionPane.showMessageDialog(this, "¡Lo Has Logrado!", "Felicidades", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
