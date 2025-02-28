@@ -12,11 +12,8 @@ public class TorresHanoi extends JPanel {
     private int movimientoActual = 0;
     private List<int[]> movimientos;
     private Color[] colores;
-<<<<<<< HEAD
-    private boolean juegoTerminado = false; // Para evitar mostrar el mensaje múltiples veces
-=======
     private boolean juegoTerminado = false;
->>>>>>> 54543da10da1620721ede33c129563f82aae8932
+
 
     public TorresHanoi(int numDiscos, int numTorres) {
         this.numDiscos = numDiscos;
@@ -71,17 +68,17 @@ public class TorresHanoi extends JPanel {
         } else if (!juegoTerminado) {
             // Verifica si todos los discos están en la última torre
             if (torres[numTorres - 1].size() == numDiscos) {
-<<<<<<< HEAD
+
                 juegoTerminado = true; // Marca el juego como terminado
                 // Muestra el mensaje de felicitación con el número de movimientos
                 JOptionPane.showMessageDialog(this, 
                     "¡Lo has logrado!\nNúmero de movimientos: " + movimientoActual, 
                     "Felicidades", 
                     JOptionPane.INFORMATION_MESSAGE);
-=======
+
                 juegoTerminado = true;
                 JOptionPane.showMessageDialog(this, "¡Lo Has Logrado!", "Felicidades", JOptionPane.INFORMATION_MESSAGE);
->>>>>>> 54543da10da1620721ede33c129563f82aae8932
+
             }
         }
     }
